@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hr
+      POSTGRES_PASSWORD: hr
+      POSTGRES_DB: hr_services
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hr"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      HR_DATABASE_URL: postgresql+psycopg://hr:hr@db:5432/hr_services
+      HR_SECRET_KEY: ${HR_SECRET_KEY:-change-me}
+      HR_CORS_ORIGINS: '["http://localhost:3000"]'
+      HR_SEED_DEMO_DATA: ${HR_SEED_DEMO_DATA:-true}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        BACKEND_URL: http://backend:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
