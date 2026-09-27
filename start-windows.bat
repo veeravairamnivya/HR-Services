@@ -5,6 +5,7 @@ REM and opens the browser on the exact address TalentBridge is running at.
 cd /d "%~dp0"
 
 where python >nul 2>nul || (echo Python 3.11+ is required: https://www.python.org/downloads/ & pause & exit /b 1)
+python -c "import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)" >nul 2>nul || (echo Python 3.11 or newer is required. Install it from https://www.python.org/downloads/ and tick "Add python.exe to PATH". & pause & exit /b 1)
 where npm >nul 2>nul || (echo Node.js 20+ is required: https://nodejs.org/ & pause & exit /b 1)
 node -e "process.exit(Number(process.versions.node.split('.')[0]) >= 20 ? 0 : 1)" || (echo Node.js 20 or newer is required. Install the LTS version from https://nodejs.org/ & pause & exit /b 1)
 
