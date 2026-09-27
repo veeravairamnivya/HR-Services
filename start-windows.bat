@@ -7,15 +7,15 @@ where npm >nul 2>nul || (echo Node.js 20+ is required: https://nodejs.org/ & pau
 node -e "process.exit(Number(process.versions.node.split('.')[0]) >= 20 ? 0 : 1)" || (echo Node.js 20 or newer is required. Install the LTS version from https://nodejs.org/ & pause & exit /b 1)
 
 REM Another program on these ports would be opened instead of TalentBridge.
-curl -s -o nul http://localhost:3000 && (
+curl -s -o nul http://localhost:3100 && (
   echo.
-  echo Port 3000 is already used by another program - probably another app or an old terminal window.
+  echo Port 3100 is already used by another program - probably another app or an old terminal window.
   echo Close it ^(or restart the computer^) and run this script again.
   pause & exit /b 1
 )
-curl -s -o nul http://localhost:8000 && (
+curl -s -o nul http://localhost:8100 && (
   echo.
-  echo Port 8000 is already used by another program. Close it ^(or restart the computer^) and run this script again.
+  echo Port 8100 is already used by another program. Close it ^(or restart the computer^) and run this script again.
   pause & exit /b 1
 )
 
@@ -29,13 +29,13 @@ call npm install --no-audit --no-fund || (popd & pause & exit /b 1)
 popd
 
 echo [3/3] Starting TalentBridge HR...
-start "TalentBridge API (close to stop)" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\python -m uvicorn app.main:app --port 8000"
+start "TalentBridge API (close to stop)" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\python -m uvicorn app.main:app --port 8100"
 start "TalentBridge Web (close to stop)" cmd /k "cd /d "%~dp0frontend" && npm run dev"
 
 echo Waiting for the app to start...
 set /a tries=0
 :wait
-curl -s http://localhost:3000/api/health 2>nul | findstr /C:"TalentBridge" >nul && goto open
+curl -s http://localhost:3100/api/health 2>nul | findstr /C:"TalentBridge" >nul && goto open
 set /a tries+=1
 if %tries% geq 90 (
   echo The app did not start. Check the two server windows for errors.
@@ -44,8 +44,8 @@ if %tries% geq 90 (
 timeout /t 2 /nobreak >nul
 goto wait
 :open
-start "" http://localhost:3000
+start "" http://localhost:3100
 echo.
-echo TalentBridge HR is running at http://localhost:3000
+echo TalentBridge HR is running at http://localhost:3100
 echo Close the two server windows to stop it.
 pause

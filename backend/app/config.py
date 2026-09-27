@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./hr_services.db"
     secret_key: str = "change-this-secret-key-in-production"
     access_token_expire_minutes: int = 12 * 60
-    cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    cors_origins: list[str] = ["http://localhost:3100", "http://127.0.0.1:3100"]
     # Business timezone used for attendance days, "today" and monthly reports.
     timezone: str = "Asia/Kolkata"
     # Logins after this local time are marked late.
