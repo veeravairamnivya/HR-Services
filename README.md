@@ -57,6 +57,17 @@ stage matrix, daily team report (attendance + output + work summary), week-over-
 
 ## Quick start (local)
 
+**Easiest: one-click start.** Install [Python 3.11+](https://www.python.org/downloads/) and
+[Node.js 20+](https://nodejs.org/), download this repository, then:
+
+- **Windows:** double-click `start-windows.bat`
+- **macOS / Linux:** run `./start-mac-linux.sh`
+
+The script installs everything on the first run (a few minutes), starts both servers and opens
+**http://localhost:3000** in your browser. To stop, close the two server windows (Windows) or press Ctrl+C.
+
+**Or start each part manually:**
+
 **1. Backend** (http://localhost:8000, API docs at http://localhost:8000/api/docs)
 
 ```bash
