@@ -18,23 +18,23 @@ services:
     environment:
       HR_DATABASE_URL: postgresql+psycopg://hr:hr@db:5432/hr_services
       HR_SECRET_KEY: ${HR_SECRET_KEY:-change-me}
-      HR_CORS_ORIGINS: '["http://localhost:3100"]'
+      HR_CORS_ORIGINS: '["http://localhost:3847"]'
       HR_SEED_DEMO_DATA: ${HR_SEED_DEMO_DATA:-true}
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8100:8100"
+      - "8847:8847"
 
   frontend:
     build:
       context: ./frontend
       args:
-        BACKEND_URL: http://backend:8100
+        BACKEND_URL: http://backend:8847
     depends_on:
       - backend
     ports:
-      - "3100:3100"
+      - "3847:3847"
 
 volumes:
   pgdata:

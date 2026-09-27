@@ -64,25 +64,27 @@ stage matrix, daily team report (attendance + output + work summary), week-over-
 - **macOS / Linux:** run `./start-mac-linux.sh`
 
 The script installs everything on the first run (a few minutes), starts both servers and opens
-**http://localhost:3100** in your browser. To stop, close the two server windows (Windows) or press Ctrl+C.
+the app in your browser — normally **http://localhost:3847**. If another project already uses that port,
+the script picks the next free one (3848, 3849, …) and shows the exact address in the window.
+To stop, close the two server windows (Windows) or press Ctrl+C.
 
 **Or start each part manually:**
 
-**1. Backend** (http://localhost:8100, API docs at http://localhost:8100/api/docs)
+**1. Backend** (http://localhost:8847, API docs at http://localhost:8847/api/docs)
 
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\activate
 pip install -r requirements-dev.txt
 cp .env.example .env                                   # optional
-uvicorn app.main:app --reload --port 8100
+uvicorn app.main:app --reload --port 8847
 ```
 
 On first start the database is created and seeded with an admin account plus demo data
 (6 clients, 12 positions, ~110 candidates, interviews and 30 days of attendance).
 Set `HR_SEED_DEMO_DATA=false` for a clean start with only the admin account.
 
-**2. Frontend** (http://localhost:3100)
+**2. Frontend** (http://localhost:3847)
 
 ```bash
 cd frontend
@@ -90,7 +92,7 @@ npm install
 npm run dev
 ```
 
-The frontend proxies `/api/*` to the backend (`BACKEND_URL`, default `http://localhost:8100`).
+The frontend proxies `/api/*` to the backend (`BACKEND_URL`, default `http://localhost:8847`).
 
 **Demo logins**
 
@@ -108,7 +110,7 @@ Change the admin password (user menu → Change password) and set `HR_SECRET_KEY
 HR_SECRET_KEY=$(openssl rand -hex 32) docker compose up --build
 ```
 
-Opens on http://localhost:3100 with PostgreSQL, the API and the web app.
+Opens on http://localhost:3847 with PostgreSQL, the API and the web app.
 
 ## Configuration (backend, `HR_` prefix)
 
@@ -119,7 +121,7 @@ Opens on http://localhost:3100 with PostgreSQL, the API and the web app.
 | `HR_ACCESS_TOKEN_EXPIRE_MINUTES` | `720` | Session length (12 h, so recruiters sign in daily) |
 | `HR_TIMEZONE` | `Asia/Kolkata` | Business timezone for attendance days and reports |
 | `HR_OFFICE_START_TIME` | `09:45` | Sign-ins after this are marked late |
-| `HR_CORS_ORIGINS` | `["http://localhost:3100"]` | Only needed if the browser calls the API directly |
+| `HR_CORS_ORIGINS` | `["http://localhost:3847"]` | Only needed if the browser calls the API directly |
 | `HR_SEED_DEMO_DATA` | `true` | Load demo data into an empty database |
 
 ## Tests
