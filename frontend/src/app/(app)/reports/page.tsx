@@ -167,7 +167,7 @@ export default function ReportsPage() {
                       <td className="px-3 py-3">{r.round1}</td><td className="px-3 py-3">{r.round2}</td><td className="px-3 py-3">{r.round3}</td><td className="px-3 py-3">{r.hr_discussion}</td>
                       <td className="px-3 py-3 font-bold text-amber-600">{r.offers}</td><td className="px-3 py-3 font-bold text-emerald-600">{r.joined}</td>
                       <td className="px-3 py-3 text-rose-600">{r.rejected}</td><td className="px-3 py-3">{r.shortlist_ratio}%</td>
-                      <td className="px-3 py-3"><span className="rounded-lg bg-indigo-50 px-2 py-0.5 font-extrabold text-indigo-700">{r.score}</span></td>
+                      <td className="px-3 py-3"><span className="rounded-lg bg-navy-50 px-2 py-0.5 font-extrabold text-navy-700">{r.score}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -228,8 +228,8 @@ export default function ReportsPage() {
                   return (
                     <tr key={p.position_id}>
                       <td className="sticky left-0 bg-white px-5 py-2.5">
-                        <a href={`/positions/${p.position_id}`} className="font-semibold text-slate-800 hover:text-indigo-600">{p.title}</a>
-                        <div className="text-[11px] text-indigo-600">{p.client}</div>
+                        <a href={`/positions/${p.position_id}`} className="font-semibold text-slate-800 hover:text-navy-600">{p.title}</a>
+                        <div className="text-[11px] text-navy-600">{p.client}</div>
                       </td>
                       <td className="px-3 py-2.5"><Pill className={POSITION_STATUS_STYLE[p.status]}>{titleCase(p.status)}</Pill></td>
                       <td className="px-3 py-2.5 font-semibold">{p.openings}</td>

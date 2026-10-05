@@ -88,7 +88,7 @@ function EditableCell({ col, value, canEdit, onSave }: {
 
   const common = {
     autoFocus: true,
-    className: "h-full w-full bg-white px-2 text-[13px] outline-none ring-2 ring-inset ring-indigo-400",
+    className: "h-full w-full bg-white px-2 text-[13px] outline-none ring-2 ring-inset ring-navy-400",
     onKeyDown: (e: React.KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -98,7 +98,7 @@ function EditableCell({ col, value, canEdit, onSave }: {
   };
 
   return (
-    <td className={clsx("sheet-cell p-0", canEdit && "cursor-text hover:bg-indigo-50/60")} style={{ minWidth: col.width, maxWidth: col.width }}>
+    <td className={clsx("sheet-cell p-0", canEdit && "cursor-text hover:bg-navy-50/60")} style={{ minWidth: col.width, maxWidth: col.width }}>
       {editing ? (
         col.type === "source" ? (
           <select {...common} value={draft} onChange={(e) => commit(e.target.value)} onBlur={() => setEditing(false)}>
@@ -256,7 +256,7 @@ export function CandidateSheet({ position, candidates, onUpdated, onCreated, onO
       <table className="border-separate border-spacing-0 text-left">
         <thead className="sticky top-0 z-20">
           <tr className="text-[11px] font-bold uppercase tracking-wide text-white">
-            <th className="sticky left-0 z-30 h-10 bg-indigo-600 px-3" style={{ minWidth: 44 }}>
+            <th className="sticky left-0 z-30 h-10 bg-navy-600 px-3" style={{ minWidth: 44 }}>
               <input
                 type="checkbox"
                 className="accent-amber-400"
@@ -265,15 +265,15 @@ export function CandidateSheet({ position, candidates, onUpdated, onCreated, onO
                 aria-label="Select all"
               />
             </th>
-            <th className="sticky left-[44px] z-30 bg-indigo-600 text-center" style={{ minWidth: 40 }}>#</th>
-            <th className="sticky left-[84px] z-30 border-r-2 border-indigo-400 bg-indigo-600 px-2" style={{ minWidth: 220 }}>Candidate Name</th>
-            <th className="bg-violet-600 px-2" style={{ minWidth: 190 }}>Stage</th>
+            <th className="sticky left-[44px] z-30 bg-navy-600 text-center" style={{ minWidth: 40 }}>#</th>
+            <th className="sticky left-[84px] z-30 border-r-2 border-navy-400 bg-navy-600 px-2" style={{ minWidth: 220 }}>Candidate Name</th>
+            <th className="bg-navy-800 px-2 text-gold-300" style={{ minWidth: 190 }}>Stage</th>
             {COLS.map((c) => (
-              <th key={c.key} className="whitespace-nowrap bg-indigo-600 px-2" style={{ minWidth: c.width }}>{c.label}</th>
+              <th key={c.key} className="whitespace-nowrap bg-navy-600 px-2" style={{ minWidth: c.width }}>{c.label}</th>
             ))}
-            <th className="bg-fuchsia-600 px-2" style={{ minWidth: 190 }}>Next Interview</th>
-            <th className="bg-indigo-600 px-2" style={{ minWidth: 150 }}>Recruiter</th>
-            <th className="bg-indigo-600 px-2" style={{ minWidth: 110 }}>Updated</th>
+            <th className="bg-navy-800 px-2 text-gold-300" style={{ minWidth: 190 }}>Next Interview</th>
+            <th className="bg-navy-600 px-2" style={{ minWidth: 150 }}>Recruiter</th>
+            <th className="bg-navy-600 px-2" style={{ minWidth: 110 }}>Updated</th>
           </tr>
         </thead>
         <tbody>
@@ -285,7 +285,7 @@ export function CandidateSheet({ position, candidates, onUpdated, onCreated, onO
                 <td className={clsx("sheet-cell sticky left-0 z-10 text-center", rowBg)}>
                   <input
                     type="checkbox"
-                    className="accent-indigo-600"
+                    className="accent-navy-600"
                     checked={selected.has(c.id)}
                     onChange={() => {
                       const next = new Set(selected);
@@ -300,10 +300,10 @@ export function CandidateSheet({ position, candidates, onUpdated, onCreated, onO
                 <td className={clsx("sheet-cell sticky left-[84px] z-10 border-r-2 border-r-slate-200 p-0", rowBg)} style={{ minWidth: 220 }}>
                   <div className="flex h-10 items-center gap-2 pl-2 pr-1">
                     <span className={clsx("h-2 w-2 shrink-0 rounded-full", stageMeta(c.stage).dot)} />
-                    <button onClick={() => onOpen(c.id)} className="min-w-0 flex-1 truncate text-left text-[13px] font-semibold text-slate-800 hover:text-indigo-600" title="Open profile">
+                    <button onClick={() => onOpen(c.id)} className="min-w-0 flex-1 truncate text-left text-[13px] font-semibold text-slate-800 hover:text-navy-600" title="Open profile">
                       {c.full_name}
                     </button>
-                    <button onClick={() => onOpen(c.id)} className="rounded-md p-1 text-slate-400 opacity-0 hover:bg-indigo-100 hover:text-indigo-600 group-hover:opacity-100" aria-label="Open profile">
+                    <button onClick={() => onOpen(c.id)} className="rounded-md p-1 text-slate-400 opacity-0 hover:bg-navy-100 hover:text-navy-600 group-hover:opacity-100" aria-label="Open profile">
                       <Eye className="h-3.5 w-3.5" />
                     </button>
                     {editable && (
@@ -347,12 +347,12 @@ export function CandidateSheet({ position, candidates, onUpdated, onCreated, onO
                 ))}
                 <td className="sheet-cell">
                   {c.next_interview ? (
-                    <button onClick={() => onOpen(c.id, "interviews")} className="flex items-center gap-1.5 rounded-lg bg-fuchsia-50 px-2 py-1 text-xs font-semibold text-fuchsia-700 hover:bg-fuchsia-100">
+                    <button onClick={() => onOpen(c.id, "interviews")} className="flex items-center gap-1.5 rounded-lg bg-gold-50 px-2 py-1 text-xs font-semibold text-gold-800 hover:bg-gold-100">
                       <CalendarClock className="h-3.5 w-3.5" />
                       R{c.next_interview.round_number} · {c.next_interview.scheduled_at ? fmtDateTime(c.next_interview.scheduled_at) : "TBD"}
                     </button>
                   ) : editable ? (
-                    <button onClick={() => onOpen(c.id, "interviews")} className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-400 hover:bg-slate-100 hover:text-indigo-600">
+                    <button onClick={() => onOpen(c.id, "interviews")} className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-400 hover:bg-slate-100 hover:text-navy-600">
                       + Schedule
                     </button>
                   ) : null}

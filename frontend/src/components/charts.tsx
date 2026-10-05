@@ -16,7 +16,7 @@ import {
 // Categorical slots in fixed order (validated for adjacent-pair colour-blind separation).
 export const SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
 // Single hue for magnitude charts.
-export const MAGNITUDE = "#6366f1";
+export const MAGNITUDE = "#1a3052";
 
 const axis = { stroke: "#94a3b8", fontSize: 11, tickLine: false, axisLine: false } as const;
 

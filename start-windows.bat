@@ -1,7 +1,7 @@
 @echo off
 setlocal
 REM One-click start for Windows: installs dependencies, picks free ports, starts the API and web app,
-REM and opens the browser on the exact address TalentBridge is running at.
+REM and opens the browser on the exact address ABRAH is running at.
 cd /d "%~dp0"
 
 where python >nul 2>nul || (echo Python 3.11+ is required: https://www.python.org/downloads/ & pause & exit /b 1)
@@ -26,15 +26,15 @@ pushd frontend
 call npm install --no-audit --no-fund || (popd & pause & exit /b 1)
 popd
 
-echo [3/3] Starting TalentBridge HR on port %WEB_PORT% ...
+echo [3/3] Starting ABRAH Recruitment on port %WEB_PORT% ...
 set "BACKEND_URL=http://localhost:%API_PORT%"
-start "TalentBridge API :%API_PORT% (close to stop)" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\python -m uvicorn app.main:app --port %API_PORT%"
-start "TalentBridge Web :%WEB_PORT% (close to stop)" cmd /k "cd /d "%~dp0frontend" && npx next dev -p %WEB_PORT%"
+start "ABRAH API :%API_PORT% (close to stop)" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\python -m uvicorn app.main:app --port %API_PORT%"
+start "ABRAH Web :%WEB_PORT% (close to stop)" cmd /k "cd /d "%~dp0frontend" && npx next dev -p %WEB_PORT%"
 
 echo Waiting for the app to start...
 set /a tries=0
 :wait
-curl -s http://localhost:%WEB_PORT%/api/health 2>nul | findstr /C:"TalentBridge" >nul && goto open
+curl -s http://localhost:%WEB_PORT%/api/health 2>nul | findstr /C:"hr-services" >nul && goto open
 set /a tries+=1
 if %tries% geq 90 (
   echo The app did not start. Check the two server windows for errors.
@@ -46,7 +46,7 @@ goto wait
 start "" http://localhost:%WEB_PORT%
 echo.
 echo ============================================================
-echo   TalentBridge HR is running at:  http://localhost:%WEB_PORT%
+echo   ABRAH Recruitment is running at:  http://localhost:%WEB_PORT%
 echo ============================================================
 echo Close the two server windows to stop it.
 pause

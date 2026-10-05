@@ -13,12 +13,12 @@ export function initials(name: string): string {
 }
 
 const AVATAR_COLORS = [
-  "from-indigo-500 to-violet-500",
+  "from-navy-600 to-navy-800",
   "from-sky-500 to-cyan-400",
   "from-emerald-500 to-teal-400",
   "from-amber-500 to-orange-400",
   "from-pink-500 to-rose-400",
-  "from-fuchsia-500 to-purple-500",
+  "from-gold-500 to-gold-700",
 ];
 
 export function avatarColor(seed: string | number): string {

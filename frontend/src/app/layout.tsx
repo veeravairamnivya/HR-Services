@@ -6,8 +6,9 @@ import "./globals.css";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "TalentBridge HR · Recruitment Workspace",
-  description: "Clients, openings, candidate pipelines, interviews, attendance and reports for recruitment teams.",
+  title: "ABRAH Recruitment Services",
+  description: "ABRAH Recruitment Services — clients, openings, candidate pipelines, interviews, attendance and reports.",
+  applicationName: "ABRAH Recruitment Services",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

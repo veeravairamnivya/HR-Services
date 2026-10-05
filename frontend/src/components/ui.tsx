@@ -10,7 +10,7 @@ type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "success";
 
 const BUTTON_STYLES: Record<ButtonVariant, string> = {
   primary:
-    "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-glow hover:from-indigo-500 hover:to-violet-500",
+    "bg-navy-900 text-white shadow-glow hover:bg-navy-800",
   secondary: "border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50",
   ghost: "text-slate-600 hover:bg-slate-100",
   danger: "bg-rose-600 text-white hover:bg-rose-500",
@@ -58,7 +58,7 @@ export function CardHeader({ title, subtitle, action, icon: Icon }: {
     <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
       <div className="flex items-center gap-3">
         {Icon && (
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-indigo-50 text-indigo-600">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gold-50 text-gold-600 ring-1 ring-gold-100">
             <Icon className="h-[18px] w-[18px]" />
           </span>
         )}
@@ -82,7 +82,7 @@ export function PageHeader({ title, subtitle, actions, icon: Icon }: {
     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="flex items-center gap-4">
         {Icon && (
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-glow">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-navy-900 text-gold-400 shadow-glow">
             <Icon className="h-6 w-6" />
           </span>
         )}
@@ -132,7 +132,7 @@ export function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md"
 }
 
 export function Spinner({ className }: { className?: string }) {
-  return <Loader2 className={clsx("h-5 w-5 animate-spin text-indigo-500", className)} />;
+  return <Loader2 className={clsx("h-5 w-5 animate-spin text-navy-500", className)} />;
 }
 
 export function LoadingBlock({ label = "Loading…" }: { label?: string }) {
@@ -151,7 +151,7 @@ export function EmptyState({ icon: Icon, title, text, action }: {
 }) {
   return (
     <div className="flex flex-col items-center justify-center px-6 py-14 text-center">
-      <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-indigo-50 to-fuchsia-50 text-indigo-500">
+      <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-gold-50 text-gold-600 ring-1 ring-gold-200">
         <Icon className="h-7 w-7" />
       </span>
       <h3 className="font-bold text-slate-800">{title}</h3>
@@ -259,13 +259,13 @@ export function Tabs<T extends string>({ tabs, value, onChange }: {
           onClick={() => onChange(key)}
           className={clsx(
             "flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-semibold transition",
-            value === key ? "bg-white text-indigo-700 shadow-sm" : "text-slate-500 hover:text-slate-800",
+            value === key ? "bg-white text-navy-700 shadow-sm" : "text-slate-500 hover:text-slate-800",
           )}
         >
           {Icon && <Icon className="h-4 w-4" />}
           {label}
           {count !== undefined && (
-            <span className={clsx("rounded-full px-1.5 text-[11px]", value === key ? "bg-indigo-100" : "bg-slate-200")}>{count}</span>
+            <span className={clsx("rounded-full px-1.5 text-[11px]", value === key ? "bg-navy-100" : "bg-slate-200")}>{count}</span>
           )}
         </button>
       ))}
@@ -289,7 +289,7 @@ export function ConfirmButton({ onConfirm, children, message = "Are you sure?", 
   );
 }
 
-export function Progress({ value, className, color = "from-indigo-500 to-fuchsia-500" }: {
+export function Progress({ value, className, color = "from-gold-400 to-gold-600" }: {
   value: number;
   className?: string;
   color?: string;

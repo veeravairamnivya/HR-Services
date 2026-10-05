@@ -70,9 +70,9 @@ export default function InterviewsPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-7">
           {days.map(([day, items]) => (
-            <div key={day} className={clsx("card flex flex-col overflow-hidden", day === today && "ring-2 ring-indigo-400")}>
-              <div className={clsx("px-4 py-3", day === today ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white" : "bg-slate-50")}>
-                <div className={clsx("text-xs font-bold uppercase", day === today ? "text-indigo-100" : "text-slate-500")}>
+            <div key={day} className={clsx("card flex flex-col overflow-hidden", day === today && "ring-2 ring-gold-400")}>
+              <div className={clsx("px-4 py-3", day === today ? "bg-navy-900 text-white" : "bg-slate-50")}>
+                <div className={clsx("text-xs font-bold uppercase", day === today ? "text-gold-300" : "text-slate-500")}>
                   {new Date(`${day}T00:00:00`).toLocaleDateString("en-IN", { weekday: "long" })}
                 </div>
                 <div className="flex items-baseline justify-between">
@@ -85,16 +85,16 @@ export default function InterviewsPage() {
                 {items.map((iv) => {
                   const Icon = MODE_ICON[iv.mode] ?? Video;
                   return (
-                    <button key={iv.id} onClick={() => setOpenId(iv.candidate_id)} className="rounded-xl border border-slate-100 bg-white p-3 text-left transition hover:border-indigo-200 hover:shadow-md">
+                    <button key={iv.id} onClick={() => setOpenId(iv.candidate_id)} className="rounded-xl border border-slate-100 bg-white p-3 text-left transition hover:border-navy-200 hover:shadow-md">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-extrabold text-indigo-700">{fmtTime(iv.scheduled_at)}</span>
+                        <span className="text-sm font-extrabold text-navy-700">{fmtTime(iv.scheduled_at)}</span>
                         <Icon className="h-3.5 w-3.5 text-slate-400" />
                       </div>
                       <div className="mt-1 truncate text-sm font-bold text-slate-800">{iv.candidate_name}</div>
                       <div className="truncate text-xs text-slate-500">{iv.position_title}</div>
-                      <div className="truncate text-xs font-semibold text-indigo-600">{iv.client_name}</div>
+                      <div className="truncate text-xs font-semibold text-navy-600">{iv.client_name}</div>
                       <div className="mt-2 flex flex-wrap items-center gap-1">
-                        <Pill className="bg-violet-50 text-violet-700">R{iv.round_number}</Pill>
+                        <Pill className="bg-navy-50 text-navy-700">R{iv.round_number}</Pill>
                         <Pill className={RESULT_STYLE[iv.result]}>{titleCase(iv.result)}</Pill>
                       </div>
                       <div className="mt-1.5"><StageBadge stage={iv.candidate_stage} short /></div>

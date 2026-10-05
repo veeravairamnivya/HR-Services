@@ -13,7 +13,7 @@ import type { User } from "@/lib/types";
 
 const ROLE_STYLE: Record<string, string> = {
   admin: "bg-rose-100 text-rose-700",
-  manager: "bg-violet-100 text-violet-700",
+  manager: "bg-gold-100 text-gold-800",
   recruiter: "bg-sky-100 text-sky-700",
 };
 
@@ -73,7 +73,7 @@ function UserModal({ open, onClose, user, onSaved }: { open: boolean; onClose: (
         <Field label="Phone"><input className="input" {...bind("phone")} /></Field>
         {user && (
           <label className="flex items-center gap-2 text-sm font-semibold text-slate-600 sm:col-span-2">
-            <input type="checkbox" className="accent-indigo-600" checked={Boolean(form.is_active)} onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))} />
+            <input type="checkbox" className="accent-navy-600" checked={Boolean(form.is_active)} onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))} />
             Active (can log in)
           </label>
         )}
@@ -112,7 +112,7 @@ export default function TeamPage() {
                   <p className="truncate text-xs text-slate-400">{u.email}{u.phone ? ` · ${u.phone}` : ""}</p>
                 </div>
                 {isAdmin && (
-                  <button onClick={() => { setEditing(u); setOpen(true); }} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-indigo-600" aria-label="Edit">
+                  <button onClick={() => { setEditing(u); setOpen(true); }} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-navy-600" aria-label="Edit">
                     <Pencil className="h-4 w-4" />
                   </button>
                 )}

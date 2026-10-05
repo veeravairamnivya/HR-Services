@@ -44,7 +44,7 @@ function MyAttendance() {
         {[
           { label: "Days present (31d)", value: data.length, icon: CheckCircle2, cls: "from-emerald-500 to-teal-400" },
           { label: "Late check-ins", value: late, icon: Clock, cls: "from-amber-500 to-orange-400" },
-          { label: "Avg hours / day", value: avg.toFixed(1), icon: Timer, cls: "from-indigo-500 to-violet-500" },
+          { label: "Avg hours / day", value: avg.toFixed(1), icon: Timer, cls: "from-navy-700 to-navy-900" },
         ].map(({ label, value, icon: Icon, cls }) => (
           <div key={label} className={clsx("flex items-center justify-between rounded-2xl bg-gradient-to-br p-5 text-white shadow-md", cls)}>
             <div><div className="text-3xl font-extrabold">{value}</div><div className="text-xs font-semibold uppercase tracking-wide text-white/85">{label}</div></div>

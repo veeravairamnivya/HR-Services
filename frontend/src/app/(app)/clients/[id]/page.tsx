@@ -39,7 +39,7 @@ export default function ClientDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Link href="/clients" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-indigo-600">
+      <Link href="/clients" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-navy-600">
         <ArrowLeft className="h-4 w-4" /> All clients
       </Link>
       <div className="card overflow-hidden">
@@ -104,7 +104,7 @@ export default function ClientDetailPage() {
             {[
               { label: "Active roles", value: client.open_positions, cls: "from-amber-500 to-orange-400" },
               { label: "Seats open", value: client.total_openings, cls: "from-sky-500 to-cyan-400" },
-              { label: "Offers made", value: client.offers, cls: "from-fuchsia-500 to-pink-500" },
+              { label: "Offers made", value: client.offers, cls: "from-gold-400 to-gold-600" },
               { label: "Joined", value: client.joined, cls: "from-emerald-500 to-teal-400" },
             ].map((s) => (
               <div key={s.label} className={clsx("rounded-2xl bg-gradient-to-br p-4 text-white shadow-md", s.cls)}>

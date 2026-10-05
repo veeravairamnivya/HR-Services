@@ -17,6 +17,7 @@ import {
   Sheet,
   Trash2,
   Upload,
+  UserPlus,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -24,6 +25,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
+import { AddCandidateModal } from "@/components/AddCandidateModal";
 import { CandidateDrawer } from "@/components/CandidateDrawer";
 import { CandidateSheet } from "@/components/CandidateSheet";
 import { KanbanBoard } from "@/components/KanbanBoard";
@@ -52,6 +54,7 @@ function PositionSheetPage() {
   const [bulkStage, setBulkStage] = useState("shortlisted");
   const [editOpen, setEditOpen] = useState(false);
   const [showJd, setShowJd] = useState(false);
+  const [adding, setAdding] = useState(false);
   const [drawer, setDrawer] = useState<{ id: number; tab: "details" | "interviews" } | null>(() => {
     const c = searchParams.get("candidate");
     return c ? { id: Number(c), tab: "details" } : null;
@@ -123,15 +126,15 @@ function PositionSheetPage() {
 
   return (
     <div className="space-y-5">
-      <Link href="/positions" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-indigo-600">
+      <Link href="/positions" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-navy-600">
         <ArrowLeft className="h-4 w-4" /> All positions
       </Link>
 
       {/* Position header */}
       <div className="card overflow-hidden">
-        <div className="flex flex-col gap-5 bg-gradient-to-r from-indigo-50 via-violet-50 to-fuchsia-50 p-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col gap-5 bg-gradient-to-r from-navy-50 via-white to-gold-50 p-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
-            <Link href={`/clients/${position.client_id}`} className="text-xs font-bold uppercase tracking-wide text-indigo-600 hover:underline">
+            <Link href={`/clients/${position.client_id}`} className="text-xs font-bold uppercase tracking-wide text-navy-600 hover:underline">
               {position.client.name}
             </Link>
             <div className="mt-1 flex flex-wrap items-center gap-2">
@@ -143,19 +146,19 @@ function PositionSheetPage() {
               <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-sky-500" />{position.location ?? "—"} · {titleCase(position.work_mode)}</span>
               <span className="flex items-center gap-1.5"><Briefcase className="h-4 w-4 text-amber-500" />{range(position.min_experience, position.max_experience, " yrs")}</span>
               <span className="flex items-center gap-1.5"><IndianRupee className="h-4 w-4 text-emerald-500" />{range(position.min_budget, position.max_budget, " LPA")}</span>
-              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-fuchsia-500" />{position.days_open} days open</span>
+              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-gold-600" />{position.days_open} days open</span>
               {position.target_date && <span className="flex items-center gap-1.5"><CalendarDays className="h-4 w-4 text-rose-500" />Target {fmtDate(position.target_date)}</span>}
               {position.job_code && <span className="font-mono text-xs text-slate-400">{position.job_code}</span>}
             </div>
             {position.skills && (
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {position.skills.split(",").map((s) => (
-                  <span key={s} className="rounded-lg bg-white px-2 py-0.5 text-xs font-semibold text-indigo-600 shadow-sm">{s.trim()}</span>
+                  <span key={s} className="rounded-lg bg-white px-2 py-0.5 text-xs font-semibold text-navy-600 shadow-sm">{s.trim()}</span>
                 ))}
               </div>
             )}
             {position.description && (
-              <button onClick={() => setShowJd((v) => !v)} className="mt-3 flex items-center gap-1 text-xs font-bold text-indigo-600">
+              <button onClick={() => setShowJd((v) => !v)} className="mt-3 flex items-center gap-1 text-xs font-bold text-navy-600">
                 Job description <ChevronDown className={clsx("h-3.5 w-3.5 transition", showJd && "rotate-180")} />
               </button>
             )}
@@ -164,7 +167,7 @@ function PositionSheetPage() {
           <div className="flex shrink-0 flex-col gap-3 lg:items-end">
             <div className="flex gap-3">
               <div className="rounded-2xl bg-white px-4 py-2 text-center shadow-sm"><div className="text-xl font-extrabold text-slate-800">{candidates.length}</div><div className="text-[11px] font-semibold uppercase text-slate-500">Candidates</div></div>
-              <div className="rounded-2xl bg-white px-4 py-2 text-center shadow-sm"><div className="text-xl font-extrabold text-indigo-600">{position.interview_count}</div><div className="text-[11px] font-semibold uppercase text-slate-500">Interviewed</div></div>
+              <div className="rounded-2xl bg-white px-4 py-2 text-center shadow-sm"><div className="text-xl font-extrabold text-navy-600">{position.interview_count}</div><div className="text-[11px] font-semibold uppercase text-slate-500">Interviewed</div></div>
               <div className="rounded-2xl bg-white px-4 py-2 text-center shadow-sm"><div className="text-xl font-extrabold text-amber-600">{position.offer_count}</div><div className="text-[11px] font-semibold uppercase text-slate-500">Offers</div></div>
               <div className="rounded-2xl bg-white px-4 py-2 text-center shadow-sm"><div className="text-xl font-extrabold text-emerald-600">{position.joined_count}/{position.openings}</div><div className="text-[11px] font-semibold uppercase text-slate-500">Filled</div></div>
             </div>
@@ -220,17 +223,20 @@ function PositionSheetPage() {
               <input className="input w-56 py-1.5 pl-9" placeholder="Filter this sheet…" value={q} onChange={(e) => setQ(e.target.value)} />
             </div>
             <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600">
-              <input type="checkbox" className="accent-indigo-600" checked={mineOnly} onChange={(e) => setMineOnly(e.target.checked)} /> My candidates
+              <input type="checkbox" className="accent-navy-600" checked={mineOnly} onChange={(e) => setMineOnly(e.target.checked)} /> My candidates
             </label>
             <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
-              <button onClick={() => setView("sheet")} className={clsx("flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold", view === "sheet" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500")}><Sheet className="h-3.5 w-3.5" /> Sheet</button>
-              <button onClick={() => setView("board")} className={clsx("flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold", view === "board" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500")}><KanbanSquare className="h-3.5 w-3.5" /> Board</button>
+              <button onClick={() => setView("sheet")} className={clsx("flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold", view === "sheet" ? "bg-white text-navy-600 shadow-sm" : "text-slate-500")}><Sheet className="h-3.5 w-3.5" /> Sheet</button>
+              <button onClick={() => setView("board")} className={clsx("flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold", view === "board" ? "bg-white text-navy-600 shadow-sm" : "text-slate-500")}><KanbanSquare className="h-3.5 w-3.5" /> Board</button>
             </div>
+            {(position.status === "open" || position.status === "on_hold") && (
+              <Button size="sm" icon={UserPlus} onClick={() => setAdding(true)}>Add candidate</Button>
+            )}
             <Button size="sm" variant="secondary" icon={Download} onClick={() => api.download(`/positions/${position.id}/candidates/export${stageFilter ? `?stage=${stageFilter}` : ""}`).catch((e) => toast.error(e.message))}>
               Export Excel
             </Button>
             <Button size="sm" variant="secondary" icon={Upload} onClick={() => fileRef.current?.click()}>Import</Button>
-            <button className="text-xs font-semibold text-indigo-600 hover:underline" onClick={() => api.download(`/positions/${position.id}/candidates/template`).catch((e) => toast.error(e.message))}>
+            <button className="text-xs font-semibold text-navy-600 hover:underline" onClick={() => api.download(`/positions/${position.id}/candidates/template`).catch((e) => toast.error(e.message))}>
               template
             </button>
             <input ref={fileRef} type="file" accept=".xlsx,.csv" hidden onChange={(e) => e.target.files?.[0] && importFile(e.target.files[0])} />
@@ -270,6 +276,7 @@ function PositionSheetPage() {
       </div>
 
       <CandidateDrawer candidateId={drawer?.id ?? null} initialTab={drawer?.tab} onClose={() => setDrawer(null)} onChanged={refreshAll} />
+      <AddCandidateModal open={adding} onClose={() => setAdding(false)} defaultPositionId={position.id} onCreated={refreshAll} />
       <PositionFormModal open={editOpen} onClose={() => setEditOpen(false)} position={position} onSaved={() => mutatePosition()} />
     </div>
   );

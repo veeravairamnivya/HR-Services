@@ -37,11 +37,11 @@ export function PositionsTable({ positions, hideClient }: { positions: Position[
         </thead>
         <tbody className="divide-y divide-slate-100">
           {positions.map((p) => (
-            <tr key={p.id} onClick={() => router.push(`/positions/${p.id}`)} className="cursor-pointer transition hover:bg-indigo-50/40">
+            <tr key={p.id} onClick={() => router.push(`/positions/${p.id}`)} className="cursor-pointer transition hover:bg-navy-50/40">
               <td className="px-5 py-3">
                 <div className="font-bold text-slate-800">{p.title}</div>
                 <div className="text-xs text-slate-500">
-                  {!hideClient && <span className="font-semibold text-indigo-600">{p.client.name} · </span>}
+                  {!hideClient && <span className="font-semibold text-navy-600">{p.client.name} · </span>}
                   {p.location ?? "—"} · {titleCase(p.work_mode)}
                   {p.job_code ? ` · ${p.job_code}` : ""}
                 </div>

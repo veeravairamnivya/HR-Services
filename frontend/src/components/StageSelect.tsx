@@ -17,7 +17,7 @@ export function StageSelect({ value, onChange, className, disabled }: {
       onChange={(e) => onChange(e.target.value)}
       onClick={(e) => e.stopPropagation()}
       className={clsx(
-        "cursor-pointer appearance-none rounded-full border-0 py-1 pl-3 pr-7 text-xs font-bold ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:cursor-not-allowed",
+        "cursor-pointer appearance-none rounded-full border-0 py-1 pl-3 pr-7 text-xs font-bold ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-navy-400 disabled:cursor-not-allowed",
         "bg-[length:14px] bg-[right_8px_center] bg-no-repeat",
         meta.chip,
         className,

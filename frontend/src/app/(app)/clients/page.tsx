@@ -3,7 +3,8 @@
 import clsx from "clsx";
 import { Briefcase, Building2, Globe, Mail, MapPin, Phone, Plus, Search, UserRound } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import useSWR from "swr";
 import { ClientFormModal } from "@/components/forms";
 import { Button, EmptyState, LoadingBlock, PageHeader, Pill, Tabs } from "@/components/ui";
@@ -13,10 +14,12 @@ import { avatarColor, initials, titleCase } from "@/lib/format";
 import { CLIENT_STATUS_STYLE } from "@/lib/stages";
 import type { Client } from "@/lib/types";
 
-export default function ClientsPage() {
+function ClientsPageInner() {
   const { isManager } = useAuth();
   const [q, setQ] = useState("");
-  const [status, setStatus] = useState<"" | "active" | "prospect" | "inactive">("");
+  const params = useSearchParams();
+  // Dashboard cards link here with ?status=…
+  const [status, setStatus] = useState<"" | "active" | "prospect" | "inactive">(() => (params.get("status") ?? "") as "" | "active" | "prospect" | "inactive");
   const [open, setOpen] = useState(false);
   const { data, isLoading, mutate } = useSWR<Client[]>(`/clients${qs({ q, status })}`);
 
@@ -63,7 +66,7 @@ export default function ClientsPage() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="truncate text-lg font-bold text-slate-900 group-hover:text-indigo-700">{c.name}</h3>
+                      <h3 className="truncate text-lg font-bold text-slate-900 group-hover:text-navy-700">{c.name}</h3>
                       <Pill className={CLIENT_STATUS_STYLE[c.status]}>{titleCase(c.status)}</Pill>
                     </div>
                     <p className="text-sm text-slate-500">{c.industry ?? "—"}</p>
@@ -80,7 +83,7 @@ export default function ClientsPage() {
                   {[
                     { label: "Open roles", value: c.open_positions, cls: "bg-amber-50 text-amber-700" },
                     { label: "Seats", value: c.total_openings, cls: "bg-sky-50 text-sky-700" },
-                    { label: "Candidates", value: c.total_candidates, cls: "bg-violet-50 text-violet-700" },
+                    { label: "Candidates", value: c.total_candidates, cls: "bg-navy-50 text-navy-700" },
                     { label: "Joined", value: c.joined, cls: "bg-emerald-50 text-emerald-700" },
                   ].map((s) => (
                     <div key={s.label} className={clsx("rounded-xl py-2", s.cls)}>
@@ -89,7 +92,7 @@ export default function ClientsPage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-indigo-600">
+                <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-navy-600">
                   <Briefcase className="h-3.5 w-3.5" /> {c.total_positions} positions in total
                 </div>
               </div>
@@ -99,5 +102,13 @@ export default function ClientsPage() {
       )}
       <ClientFormModal open={open} onClose={() => setOpen(false)} onSaved={() => mutate()} />
     </div>
+  );
+}
+
+export default function ClientsPage() {
+  return (
+    <Suspense fallback={<LoadingBlock />}>
+      <ClientsPageInner />
+    </Suspense>
   );
 }

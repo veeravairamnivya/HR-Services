@@ -138,3 +138,33 @@ def test_links_must_be_http(client, setup):
     assert _add(client, h, pid, resume_url="javascript:alert(1)").status_code == 422
     r = _add(client, h, pid, resume_url="drive.google.com/file/abc")
     assert r.status_code == 201 and r.json()["resume_url"] == "https://drive.google.com/file/abc"
+
+
+def test_dashboard_cards_match_their_candidate_lists(client, admin, setup):
+    """Every dashboard number links to /candidates with filters that must return exactly that many rows."""
+    h = setup["rita"]
+    pid = setup["position"]["id"]
+    stages = ["sourced", "shortlisted", "offer_released", "joined", "rejected"]
+    for i, stage in enumerate(stages):
+        r = _add(client, h, pid, full_name=f"Card {i}", email=f"card{i}@example.com", phone=f"91111111{i:02d}")
+        assert r.status_code == 201
+        client.post(f"/api/candidates/{r.json()['id']}/stage", headers=h, json={"stage": stage})
+
+    dash = client.get("/api/dashboard", headers=admin).json()
+    today = dash["today"]
+    month = today[:8] + "01"
+    active = "sourced,screening,shortlisted,interview_scheduled,round1_selected,round2_selected,round3_selected," \
+             "hr_discussion,offer_released,offer_accepted,on_hold"
+
+    def total(**params):
+        r = client.get("/api/candidates", headers=admin, params=params)
+        assert r.status_code == 200, r.text
+        return r.json()["total"]
+
+    k = dash["kpis"]
+    assert total(stage=active) == k["active_pipeline"] == 3
+    assert total(added_from=month, added_to=today) == k["added_month"] == 5
+    assert total(reached="offer_released", reached_from=month, reached_to=today) == k["offers_month"] == 1
+    assert total(reached="joined", reached_from=month, reached_to=today) == k["joined_month"] == 1
+    for tile in dash["stage_distribution"]:
+        assert total(stage=tile["stage"], position_status="active") == tile["count"]

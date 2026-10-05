@@ -248,7 +248,7 @@ export function PositionFormModal({ open, onClose, position, defaultClientId, on
                   onClick={() => setForm((f) => ({ ...f, recruiter_ids: on ? selected.filter((x) => x !== u.id) : [...selected, u.id] }))}
                   className={clsx(
                     "flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-xs font-semibold transition",
-                    on ? "border-indigo-300 bg-indigo-50 text-indigo-700" : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
+                    on ? "border-navy-300 bg-navy-50 text-navy-700" : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
                   )}
                 >
                   <Avatar name={u.full_name} size="sm" />

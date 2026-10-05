@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session, selectinload
 
 from ..database import utcnow
 from ..deps import DB, CurrentUser
-from ..models import Candidate, Client, InterviewRound, Position
+from ..models import Candidate, Client, InterviewRound, Position, StageHistory
 from ..schemas import (
     BulkStageChange,
     CandidateDetail,
@@ -61,10 +61,17 @@ def search_candidates(
     mine: bool = False,
     added_from: date | None = None,
     added_to: date | None = None,
+    position_status: str | None = Query(default=None, description="active (open + on hold) or a single status"),
+    reached: str | None = Query(default=None, description="Stage the candidate moved to within reached_from..reached_to"),
+    reached_from: date | None = None,
+    reached_to: date | None = None,
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
 ):
-    """Search candidates across every client and position."""
+    """Search candidates across every client and position.
+
+    The filters mirror the dashboard numbers, so each dashboard card can open exactly the candidates it counts.
+    """
     stmt = select(Candidate).join(Position).join(Client)
     if q:
         like = f"%{q.lower()}%"
@@ -92,6 +99,16 @@ def search_candidates(
     if added_from or added_to:
         lo, hi = day_bounds_utc(added_from or date(2000, 1, 1), added_to or local_today())
         stmt = stmt.where(Candidate.created_at >= lo, Candidate.created_at < hi)
+    if position_status == "active":
+        stmt = stmt.where(Position.status.in_(("open", "on_hold")))
+    elif position_status:
+        stmt = stmt.where(Position.status == position_status)
+    if reached:
+        lo, hi = day_bounds_utc(reached_from or date(2000, 1, 1), reached_to or local_today())
+        moved = select(StageHistory.candidate_id).where(
+            StageHistory.to_stage.in_(reached.split(",")), StageHistory.changed_at >= lo, StageHistory.changed_at < hi
+        )
+        stmt = stmt.where(Candidate.id.in_(moved))
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
     rows = db.scalars(stmt.options(*_LOAD).order_by(Candidate.updated_at.desc()).limit(limit).offset(offset)).all()
     items = [CandidateListItem.model_validate(c) for c in candidates_out(db, rows, with_position=True)]

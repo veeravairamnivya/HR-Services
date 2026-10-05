@@ -47,4 +47,5 @@ for module in (auth, users, clients, positions, candidates, dashboard, reports, 
 
 @app.get("/api/health", tags=["meta"])
 def health():
-    return {"status": "ok", "app": settings.app_name}
+    # "service" is a fixed id the start scripts use to recognise this app on a port.
+    return {"status": "ok", "app": settings.app_name, "service": "hr-services"}

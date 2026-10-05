@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One-click start for macOS/Linux: installs dependencies, picks free ports, starts the API and web app,
-# and opens the browser on the exact address TalentBridge is running at.
+# and opens the browser on the exact address ABRAH is running at.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -25,7 +25,7 @@ backend/.venv/bin/pip install -q -r backend/requirements.txt
 echo "[2/3] Preparing frontend (first run takes a few minutes)..."
 (cd frontend && npm install --no-audit --no-fund)
 
-echo "[3/3] Starting TalentBridge HR on port $WEB_PORT..."
+echo "[3/3] Starting ABRAH Recruitment on port $WEB_PORT..."
 (cd backend && exec .venv/bin/python -m uvicorn app.main:app --port "$API_PORT") &
 API_PID=$!
 (cd frontend && BACKEND_URL="http://localhost:$API_PORT" exec npx next dev -p "$WEB_PORT") &
@@ -35,7 +35,7 @@ trap 'kill $API_PID $WEB_PID 2>/dev/null' EXIT INT TERM
 URL="http://localhost:$WEB_PORT"
 ready=""
 for _ in $(seq 1 90); do
-  if curl -s "$URL/api/health" 2>/dev/null | grep -q TalentBridge; then ready=1; break; fi
+  if curl -s "$URL/api/health" 2>/dev/null | grep -q hr-services; then ready=1; break; fi
   sleep 2
 done
 [ -n "$ready" ] || { echo "The app did not start - see the errors above."; exit 1; }
@@ -43,7 +43,7 @@ done
 if command -v open >/dev/null; then open "$URL"; elif command -v xdg-open >/dev/null; then xdg-open "$URL"; fi
 echo
 echo "============================================================"
-echo "  TalentBridge HR is running at:  $URL"
+echo "  ABRAH Recruitment is running at:  $URL"
 echo "============================================================"
 echo "Press Ctrl+C to stop."
 wait

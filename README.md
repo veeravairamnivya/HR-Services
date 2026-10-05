@@ -1,4 +1,4 @@
-# TalentBridge HR — Recruitment Workspace
+# ABRAH Recruitment Services — Recruitment Workspace
 
 An end-to-end application for an HR consultancy's recruitment team: clients, open positions,
 a spreadsheet-style candidate tracker per position, interview rounds, daily recruiter
@@ -12,12 +12,16 @@ attendance, dashboards and Excel reports.
 ## Features
 
 **Dashboard** — greeting with today's target progress, 8 KPI cards (active clients, open positions/seats,
-active pipeline, candidates added, interviews today/week, offers & joiners this month, team present),
+active pipeline, candidates added, interviews today/week, offers & joiners this month, team present) —
+every card and stage tile opens exactly the list of candidates it counts,
 6-month hiring trend, pipeline funnel, "where candidates are now" by stage, upcoming interviews, live
 activity feed, priority positions and a recruiter leaderboard. Toggle **Whole team / My numbers**.
 
 **Clients** — client cards with contact details, fee %, payment terms and live counts (open roles, seats,
 candidates, joined). Client page lists all its positions and exports all its candidates to Excel.
+
+**Candidates** — search every candidate across all clients, filter by stage/client/recruiter, **Add candidate**
+with a full form (with duplicate warning) and **View / Edit** any candidate's profile, interviews and timeline.
 
 **Open Positions** — card or table view with filters (status, client, priority, "assigned to me"),
 experience/budget ranges, openings vs filled, pipeline colour bar and assigned recruiters.

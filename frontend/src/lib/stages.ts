@@ -15,7 +15,7 @@ export const STAGES: StageMeta[] = [
   { key: "sourced", label: "Sourced", short: "Sourced", rank: 1, chip: "bg-slate-100 text-slate-700 ring-slate-200", dot: "bg-slate-400", hex: "#94a3b8" },
   { key: "screening", label: "Screening", short: "Screening", rank: 2, chip: "bg-sky-50 text-sky-700 ring-sky-200", dot: "bg-sky-500", hex: "#0ea5e9" },
   { key: "shortlisted", label: "Shortlisted", short: "Shortlisted", rank: 3, chip: "bg-blue-50 text-blue-700 ring-blue-200", dot: "bg-blue-500", hex: "#3b82f6" },
-  { key: "interview_scheduled", label: "Interview Scheduled", short: "Interview", rank: 4, chip: "bg-indigo-50 text-indigo-700 ring-indigo-200", dot: "bg-indigo-500", hex: "#6366f1" },
+  { key: "interview_scheduled", label: "Interview Scheduled", short: "Interview", rank: 4, chip: "bg-navy-50 text-navy-700 ring-navy-200", dot: "bg-navy-500", hex: "#456694" },
   { key: "round1_selected", label: "Round 1 Selected", short: "R1 ✓", rank: 5, chip: "bg-violet-50 text-violet-700 ring-violet-200", dot: "bg-violet-500", hex: "#8b5cf6" },
   { key: "round2_selected", label: "Round 2 Selected", short: "R2 ✓", rank: 6, chip: "bg-purple-50 text-purple-700 ring-purple-200", dot: "bg-purple-500", hex: "#a855f7" },
   { key: "round3_selected", label: "Round 3 Selected", short: "R3 ✓", rank: 7, chip: "bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-200", dot: "bg-fuchsia-500", hex: "#d946ef" },
@@ -58,7 +58,7 @@ export const POSITION_STATUS_STYLE: Record<string, string> = {
   open: "bg-emerald-100 text-emerald-700",
   on_hold: "bg-amber-100 text-amber-700",
   closed: "bg-slate-200 text-slate-600",
-  filled: "bg-indigo-100 text-indigo-700",
+  filled: "bg-navy-100 text-navy-700",
 };
 
 export const CLIENT_STATUS_STYLE: Record<string, string> = {

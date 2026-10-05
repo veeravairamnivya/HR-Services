@@ -11,8 +11,8 @@ from openpyxl.utils import get_column_letter
 
 from ..pipeline import stage_label
 
-HEADER_FILL = PatternFill("solid", fgColor="4F46E5")
-HEADER_FONT = Font(bold=True, color="FFFFFF")
+HEADER_FILL = PatternFill("solid", fgColor="0C2340")
+HEADER_FONT = Font(bold=True, color="F5C542")
 
 # (header, attribute) pairs for the candidate tracker sheet.
 CANDIDATE_COLUMNS: tuple[tuple[str, str], ...] = (

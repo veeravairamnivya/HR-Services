@@ -146,7 +146,7 @@ function InterviewCard({ interview, onChanged, canEdit }: { interview: Interview
     <div className="rounded-2xl border border-slate-200 p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 text-sm font-extrabold text-white">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-navy-900 text-sm font-extrabold text-gold-400">
             R{interview.round_number}
           </span>
           <div>
@@ -167,7 +167,7 @@ function InterviewCard({ interview, onChanged, canEdit }: { interview: Interview
         </select>
       </div>
       {interview.meeting_link && (
-        <a href={interview.meeting_link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:underline">
+        <a href={interview.meeting_link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-navy-600 hover:underline">
           <Video className="h-3.5 w-3.5" /> Join meeting
         </a>
       )}
@@ -225,8 +225,8 @@ function ScheduleForm({ candidate, onDone }: { candidate: CandidateDetail; onDon
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
   return (
-    <div className="rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/40 p-4">
-      <div className="mb-3 flex items-center gap-2 font-bold text-indigo-700"><CalendarPlus className="h-4 w-4" /> Schedule round {nextRound}</div>
+    <div className="rounded-2xl border-2 border-dashed border-navy-200 bg-navy-50/40 p-4">
+      <div className="mb-3 flex items-center gap-2 font-bold text-navy-700"><CalendarPlus className="h-4 w-4" /> Schedule round {nextRound}</div>
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label="Round name"><input className="input" value={form.round_name} onChange={set("round_name")} /></Field>
         <Field label="Date & time"><input className="input" type="datetime-local" value={form.when} onChange={set("when")} /></Field>
@@ -273,7 +273,7 @@ export function CandidateDrawer({ candidateId, initialTab = "details", onClose, 
         <LoadingBlock />
       ) : (
         <>
-          <div className={clsx("relative bg-gradient-to-r px-6 pb-5 pt-6 text-white", "from-indigo-600 via-violet-600 to-fuchsia-600")}>
+          <div className={clsx("relative bg-gradient-to-r px-6 pb-5 pt-6 text-white", "from-navy-900 via-navy-800 to-navy-700")}>
             <button onClick={onClose} className="absolute right-4 top-4 rounded-lg p-1.5 text-white/80 hover:bg-white/15" aria-label="Close">
               <X className="h-5 w-5" />
             </button>
@@ -281,7 +281,7 @@ export function CandidateDrawer({ candidateId, initialTab = "details", onClose, 
               <Avatar name={c.full_name} size="lg" />
               <div className="min-w-0">
                 <h2 className="truncate text-xl font-extrabold">{c.full_name}</h2>
-                <p className="truncate text-sm text-indigo-100">
+                <p className="truncate text-sm text-navy-100">
                   {[c.current_designation, c.current_company].filter(Boolean).join(" at ") || "—"}
                 </p>
               </div>

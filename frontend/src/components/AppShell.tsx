@@ -15,7 +15,6 @@ import {
   LogOut,
   Menu,
   Search,
-  Sparkles,
   UserCog,
   Users,
   X,
@@ -31,15 +30,21 @@ import type { Attendance } from "@/lib/types";
 import { Avatar, Button, Field, Modal } from "./ui";
 
 const NAV = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, color: "text-indigo-300" },
-  { href: "/clients", label: "Clients", icon: Building2, color: "text-sky-300" },
-  { href: "/positions", label: "Open Positions", icon: Briefcase, color: "text-amber-300" },
-  { href: "/candidates", label: "Candidates", icon: Users, color: "text-emerald-300" },
-  { href: "/interviews", label: "Interviews", icon: CalendarClock, color: "text-pink-300" },
-  { href: "/reports", label: "Reports", icon: BarChart3, color: "text-fuchsia-300" },
-  { href: "/attendance", label: "Attendance", icon: CalendarDays, color: "text-lime-300" },
-  { href: "/team", label: "Team", icon: UserCog, color: "text-orange-300", managerOnly: true },
+  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/clients", label: "Clients", icon: Building2 },
+  { href: "/positions", label: "Open Positions", icon: Briefcase },
+  { href: "/candidates", label: "Candidates", icon: Users },
+  { href: "/interviews", label: "Interviews", icon: CalendarClock },
+  { href: "/reports", label: "Reports", icon: BarChart3 },
+  { href: "/attendance", label: "Attendance", icon: CalendarDays },
+  { href: "/team", label: "Team", icon: UserCog, managerOnly: true },
 ];
+
+export function BrandMark({ className }: { className?: string }) {
+  // Gold mark on a transparent background (public/abrah-mark.png).
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src="/abrah-mark.png" alt="ABRAH" className={className} />;
+}
 
 function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
@@ -49,26 +54,25 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
       {open && <div className="fixed inset-0 z-30 bg-slate-900/40 lg:hidden" onClick={onClose} />}
       <aside
         className={clsx(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-gradient-to-b from-indigo-950 via-indigo-900 to-violet-900 text-indigo-100 transition-transform lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-navy-900 text-slate-200 transition-transform lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex items-center justify-between px-5 py-5">
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
           <Link href="/" className="flex items-center gap-3" onClick={onClose}>
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-indigo-400 to-fuchsia-500 shadow-glow">
-              <Sparkles className="h-5 w-5 text-white" />
-            </span>
+            <BrandMark className="h-11 w-11 object-contain" />
             <div>
-              <div className="text-base font-extrabold leading-tight text-white">TalentBridge</div>
-              <div className="text-[11px] font-medium uppercase tracking-widest text-indigo-300">HR Workspace</div>
+              <div className="text-lg font-extrabold leading-tight tracking-[0.2em] text-white">ABRAH</div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-gold-400">Recruitment Services</div>
             </div>
           </Link>
-          <button className="rounded-lg p-1 text-indigo-300 hover:bg-white/10 lg:hidden" onClick={onClose} aria-label="Close menu">
+          <button className="rounded-lg p-1 text-slate-300 hover:bg-white/10 lg:hidden" onClick={onClose} aria-label="Close menu">
             <X className="h-5 w-5" />
           </button>
         </div>
-        <nav className="scroll-thin flex-1 space-y-1 overflow-y-auto px-3 py-2">
-          {NAV.filter((n) => !n.managerOnly || isManager).map(({ href, label, icon: Icon, color }) => {
+        <div className="px-6 pb-2 pt-5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Menu</div>
+        <nav className="scroll-thin flex-1 space-y-1 overflow-y-auto px-3">
+          {NAV.filter((n) => !n.managerOnly || isManager).map(({ href, label, icon: Icon }) => {
             const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
               <Link
@@ -76,20 +80,20 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
                 href={href}
                 onClick={onClose}
                 className={clsx(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
-                  active ? "bg-white/15 text-white shadow-inner" : "text-indigo-200 hover:bg-white/10 hover:text-white",
+                  "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+                  active ? "bg-white/10 text-gold-400" : "text-slate-300 hover:bg-white/5 hover:text-white",
                 )}
               >
-                <Icon className={clsx("h-[18px] w-[18px]", active ? "text-white" : color)} />
+                {active && <span className="absolute -left-3 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-gold-400" />}
+                <Icon className={clsx("h-[18px] w-[18px]", active ? "text-gold-400" : "text-slate-400")} />
                 {label}
-                {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-amber-300" />}
               </Link>
             );
           })}
         </nav>
-        <div className="m-3 rounded-2xl bg-white/10 p-4 text-xs text-indigo-200">
-          <div className="mb-1 font-bold text-white">Tip of the day</div>
-          Press <kbd className="rounded bg-white/20 px-1">Enter</kbd> in the last sheet row to add the next candidate instantly.
+        <div className="m-3 rounded-2xl bg-white/5 p-4 text-xs text-slate-300 ring-1 ring-white/10">
+          <div className="mb-1 font-bold text-gold-400">Quick tip</div>
+          Press <kbd className="rounded bg-white/15 px-1 text-white">Enter</kbd> in the last sheet row to add the next candidate instantly.
         </div>
       </aside>
     </>

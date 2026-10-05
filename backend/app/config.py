@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_prefix="HR_", extra="ignore")
 
-    app_name: str = "TalentBridge HR"
+    app_name: str = "ABRAH Recruitment Services"
     database_url: str = "sqlite:///./hr_services.db"
     secret_key: str = "change-this-secret-key-in-production"
     access_token_expire_minutes: int = 12 * 60
