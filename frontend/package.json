@@ -1,6 +1,6 @@
 {
-  "name": "talentbridge-hr-frontend",
-  "version": "1.0.0",
+  "name": "abrah-hr-frontend",
+  "version": "1.3.0",
   "private": true,
   "engines": {
     "node": ">=20.9"

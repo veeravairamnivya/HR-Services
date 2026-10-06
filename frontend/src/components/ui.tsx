@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { Loader2, X } from "lucide-react";
-import { forwardRef, useEffect, type ComponentType, type ReactNode } from "react";
+import { forwardRef, useEffect, useRef, type ComponentType, type ReactNode } from "react";
 import { avatarColor, initials } from "@/lib/format";
 import { stageMeta } from "@/lib/stages";
 
@@ -176,12 +176,17 @@ export function Field({ label, children, className, hint }: {
   );
 }
 
-function useEscape(onClose: () => void) {
+/** Esc closes only the top-most dialog when one opens over another. */
+function useEscape(onClose: () => void, ref: React.RefObject<HTMLDivElement | null>) {
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      const layers = document.querySelectorAll("[data-layer]");
+      if (layers[layers.length - 1] === ref.current) onClose();
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  }, [onClose, ref]);
 }
 
 export function Modal({ open, onClose, title, subtitle, children, footer, wide }: {
@@ -205,9 +210,10 @@ function ModalInner({ onClose, title, subtitle, children, footer, wide }: {
   footer?: ReactNode;
   wide?: boolean;
 }) {
-  useEscape(onClose);
+  const ref = useRef<HTMLDivElement>(null);
+  useEscape(onClose, ref);
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 p-4 backdrop-blur-sm sm:items-center">
+    <div ref={ref} data-layer className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 p-4 backdrop-blur-sm sm:items-center">
       <div className="absolute inset-0" onClick={onClose} />
       <div className={clsx("relative my-8 w-full animate-fade-in rounded-2xl bg-white shadow-2xl", wide ? "max-w-3xl" : "max-w-lg")}>
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-4">
@@ -237,9 +243,10 @@ export function Drawer({ open, onClose, children, width = "max-w-2xl" }: {
 }
 
 function DrawerInner({ onClose, children, width }: { onClose: () => void; children: ReactNode; width: string }) {
-  useEscape(onClose);
+  const ref = useRef<HTMLDivElement>(null);
+  useEscape(onClose, ref);
   return (
-    <div className="fixed inset-0 z-40 flex justify-end bg-slate-900/30 backdrop-blur-[2px]">
+    <div ref={ref} data-layer className="fixed inset-0 z-40 flex justify-end bg-slate-900/30 backdrop-blur-[2px]">
       <div className="absolute inset-0" onClick={onClose} />
       <div className={clsx("relative flex h-full w-full animate-slide-in flex-col bg-white shadow-2xl", width)}>{children}</div>
     </div>

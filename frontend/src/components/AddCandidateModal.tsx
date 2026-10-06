@@ -8,6 +8,7 @@ import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { SOURCES, STAGES } from "@/lib/stages";
 import type { Candidate, Position } from "@/lib/types";
+import { PositionFormModal } from "./forms";
 import { Button, Field, Modal } from "./ui";
 
 type Form = Record<string, string>;
@@ -41,8 +42,9 @@ export function AddCandidateModal({ open, onClose, onCreated, defaultPositionId 
   onCreated: (c: Candidate) => void;
   defaultPositionId?: number;
 }) {
-  const { user } = useAuth();
-  const { data: positions } = useSWR<Position[]>(open ? "/positions?status=active" : null);
+  const { user, isManager } = useAuth();
+  const { data: positions, mutate: mutatePositions } = useSWR<Position[]>(open ? "/positions?status=active" : null);
+  const [newPosition, setNewPosition] = useState(false);
   const [form, setForm] = useState<Form>(EMPTY);
   const [busy, setBusy] = useState(false);
   const [dupe, setDupe] = useState<string | null>(null);
@@ -106,7 +108,10 @@ export function AddCandidateModal({ open, onClose, onCreated, defaultPositionId 
     }
   }
 
+  const noPositions = positions !== undefined && positions.length === 0;
+
   return (
+    <>
     <Modal
       open={open}
       onClose={onClose}
@@ -132,7 +137,21 @@ export function AddCandidateModal({ open, onClose, onCreated, defaultPositionId 
               </option>
             ))}
           </select>
+          {isManager && (
+            <button type="button" onClick={() => setNewPosition(true)} className="mt-1 text-xs font-semibold text-navy-600 hover:underline">
+              + New position
+            </button>
+          )}
         </Field>
+        {noPositions && (
+          <div className="flex flex-wrap items-center gap-3 rounded-xl bg-gold-50 px-4 py-3 text-sm text-gold-900 ring-1 ring-gold-200 sm:col-span-2">
+            <span className="flex-1">
+              Every candidate is added against a client opening, and there are no open positions yet.
+              {isManager ? " Create one here — it takes a few seconds." : " Ask your manager to create the position first."}
+            </span>
+            {isManager && <Button size="sm" onClick={() => setNewPosition(true)}>Create position</Button>}
+          </div>
+        )}
         <Field label="Full name *">
           <input className="input" autoFocus value={form.full_name ?? ""} onChange={set("full_name")} aria-label="Full name" />
         </Field>
@@ -159,13 +178,11 @@ export function AddCandidateModal({ open, onClose, onCreated, defaultPositionId 
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" /> {dupe}
           </div>
         )}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:col-span-2 sm:grid-cols-5">
           <Field label="Total exp (yrs)"><input className="input" type="number" step="0.1" min={0} value={form.total_experience ?? ""} onChange={set("total_experience")} /></Field>
           <Field label="Relevant exp (yrs)"><input className="input" type="number" step="0.1" min={0} value={form.relevant_experience ?? ""} onChange={set("relevant_experience")} /></Field>
-        </div>
-        <div className="grid grid-cols-3 gap-4">
-          <Field label="Current CTC (L)"><input className="input" type="number" step="0.1" min={0} value={form.current_ctc ?? ""} onChange={set("current_ctc")} /></Field>
-          <Field label="Expected CTC (L)"><input className="input" type="number" step="0.1" min={0} value={form.expected_ctc ?? ""} onChange={set("expected_ctc")} /></Field>
+          <Field label="Current CTC (LPA)"><input className="input" type="number" step="0.1" min={0} value={form.current_ctc ?? ""} onChange={set("current_ctc")} /></Field>
+          <Field label="Expected CTC (LPA)"><input className="input" type="number" step="0.1" min={0} value={form.expected_ctc ?? ""} onChange={set("expected_ctc")} /></Field>
           <Field label="Notice (days)"><input className="input" type="number" min={0} value={form.notice_period_days ?? ""} onChange={set("notice_period_days")} /></Field>
         </div>
         <Field label="Current location"><input className="input" value={form.current_location ?? ""} onChange={set("current_location")} /></Field>
@@ -181,5 +198,14 @@ export function AddCandidateModal({ open, onClose, onCreated, defaultPositionId 
         <Field label="Remarks" className="sm:col-span-2"><textarea className="input min-h-20" value={form.remarks ?? ""} onChange={set("remarks")} /></Field>
       </div>
     </Modal>
+    <PositionFormModal
+      open={newPosition}
+      onClose={() => setNewPosition(false)}
+      onSaved={(p) => {
+        mutatePositions();
+        setForm((f) => ({ ...f, position_id: String(p.id) }));
+      }}
+    />
+    </>
   );
 }

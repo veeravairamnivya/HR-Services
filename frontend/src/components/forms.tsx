@@ -119,8 +119,9 @@ export function PositionFormModal({ open, onClose, position, defaultClientId, on
   defaultClientId?: number;
   onSaved: (p: Position) => void;
 }) {
-  const { data: clients } = useSWR<Client[]>(open ? "/clients" : null);
+  const { data: clients, mutate: mutateClients } = useSWR<Client[]>(open ? "/clients" : null);
   const { data: users } = useSWR<User[]>(open ? "/users" : null);
+  const [newClient, setNewClient] = useState(false);
   const initial = {
     client_id: position?.client_id ?? defaultClientId ?? "",
     title: position?.title ?? "",
@@ -171,6 +172,7 @@ export function PositionFormModal({ open, onClose, position, defaultClientId, on
   }
 
   return (
+    <>
     <Modal
       open={open}
       onClose={onClose}
@@ -192,6 +194,9 @@ export function PositionFormModal({ open, onClose, position, defaultClientId, on
             <option value="">Select client…</option>
             {clients?.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
+          <button type="button" onClick={() => setNewClient(true)} className="mt-1 text-xs font-semibold text-navy-600 hover:underline">
+            {clients && clients.length === 0 ? "No clients yet — add one" : "+ New client"}
+          </button>
         </Field>
         <Field label="Job title *" className="sm:col-span-3"><input className="input" placeholder="Senior Java Developer" {...bind("title")} /></Field>
         <Field label="Job code" className="sm:col-span-2"><input className="input" placeholder="Optional" {...bind("job_code")} /></Field>
@@ -260,5 +265,14 @@ export function PositionFormModal({ open, onClose, position, defaultClientId, on
         </div>
       </div>
     </Modal>
+    <ClientFormModal
+      open={newClient}
+      onClose={() => setNewClient(false)}
+      onSaved={(c) => {
+        mutateClients();
+        setForm((f) => ({ ...f, client_id: c.id }));
+      }}
+    />
+    </>
   );
 }

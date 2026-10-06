@@ -29,6 +29,9 @@ import { fmtTime, titleCase } from "@/lib/format";
 import type { Attendance } from "@/lib/types";
 import { Avatar, Button, Field, Modal } from "./ui";
 
+// Shown in the sidebar so it is easy to confirm which build is running.
+const APP_VERSION = "1.3";
+
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/clients", label: "Clients", icon: Building2 },
@@ -95,6 +98,7 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
           <div className="mb-1 font-bold text-gold-400">Quick tip</div>
           Press <kbd className="rounded bg-white/15 px-1 text-white">Enter</kbd> in the last sheet row to add the next candidate instantly.
         </div>
+        <div className="pb-3 text-center text-[10px] font-medium text-slate-500">ABRAH HR · version {APP_VERSION}</div>
       </aside>
     </>
   );

@@ -72,6 +72,14 @@ the app in your browser — normally **http://localhost:3847**. If another proje
 the script picks the next free one (3848, 3849, …) and shows the exact address in the window.
 To stop, close the two server windows (Windows) or press Ctrl+C.
 
+**Windows — install into `D:\ABRAH\HR` and keep it updated**
+
+- First time: double-click `install-HR-to-D-ABRAH.bat` (it can live anywhere, e.g. the Desktop). It downloads the
+  app into `D:\ABRAH\HR` — backing up anything already there to `D:\ABRAH\HR-backup-<date>` — and starts it.
+- Later updates: double-click `D:\ABRAH\HR\update-windows.bat`. It fetches the latest code, keeps your database and
+  installed packages, sets aside any local edits with `git stash`, and starts the app.
+- The sidebar shows the running version (e.g. "version 1.3"), so you can confirm you have the latest.
+
 **Or start each part manually:**
 
 **1. Backend** (http://localhost:8847, API docs at http://localhost:8847/api/docs)
